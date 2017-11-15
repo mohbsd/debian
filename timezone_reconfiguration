@@ -1,0 +1,4 @@
+Current default time zone: 'Etc/UTC'
+Local time is now:      Wed Nov 15 13:24:35 UTC 2017.
+Universal Time is now:  Wed Nov 15 13:24:35 UTC 2017.
+>>> Run 'dpkg-reconfigure tzdata' if you wish to change it.<<<
