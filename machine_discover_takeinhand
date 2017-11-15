@@ -1,0 +1,10 @@
+How to take in hand a server :
+
+# /etc/debian_version
+
+# apt-show-versions (consulte la liste des paquets
+installés et identifie les versions disponibles.)
+
+# /etc/apt/sources.list and /etc/apt/sources.list.d/
+
+# usr/local (compiled sources to program)
