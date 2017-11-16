@@ -1,0 +1,68 @@
+modules => http://httpd.apache.org/docs/2.4/mod/index.html
+
+# a2enmod module
+(active un module)
+
+# a2dismod module
+(desactive un module)
+
+>>> Ces deux programmes ne font rien d’autre que créer ou supprimer des liens symboliques dans
+/etc/apache2/mods-enabled/ pointant vers des fichiers de /etc/apache2/mods-available/ .
+
+* /etc/apache2/ports.conf >> conf port 80 par defaut
+* le serveur web renvoie les pages web depuis le répertoire /var/www/html/ (configuré dans /etc/apache2/
+sites-enabled/000-default.conf ).
+
+# a2enmod ssl
+(active ssl)
+>> /etc/apache2/sites-available/default-ssl.conf (donne un exemple de conf)<<
+
+>> http://httpd.apache.org/docs/2.4/mod/mod_ssl.html
+>> https://wiki.mozilla.org/Security/Server_Side_TLS#Apache
+
+*** Configuration d’hôtes virtuels ***
+
+-- La configuration par défaut d’Apache 2 exploite les hôtes virtuels basés sur le nom. En plus un
+hôte virtuel par défaut a été défini dans le fichier /etc/apache2/sites-enabled/000-default.conf --
+
+>> /etc/apache2/sites-available/ (definition des hotes virtuels)
+_____________________________________________________________________________________________________________________
+
+     |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+     |How To Install Linux, Apache, MySQL, PHP (LAMP) Stack on Debian|
+     |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+
+     I- Initial Server Setup / Security :
+     ------------------------------------
+     1. Create a user with some privileges >> install sudo (# apt-get install sudo)
+     2. add the new user to the "sudo" group
+     	# usermod -a -G sudo user
+     3. Add a public key authentification
+     4. disallow remote SSH access to the root account
+     # nano /etc/ssh/sshd_config
+      >> PermitRootLogin no
+     # systemctl restart ssh
+
+
+     II - Install LAMP :
+     -------------------
+
+     1. Update the System 
+     # sudo aptitude update
+     # sudo aptitude safe-upgrade
+
+     2. Install Apache
+     # sudo aptitude install apache2 apache2-doc
+     and test w/ the IP address
+
+     >> upload website content to = /var/www/html
+     >> Set up multiple websites = setup Virtual Hosts (see chap.)
+
+     3. Install and Secure MySQL
+     # aptitude install mysql-server php7.0-mysql
+     # sudo mysql_secure_installation (Y to all Questions)
+
+     # mysql -u root -p (to connect)
+
+     > status
+     > exit
