@@ -100,9 +100,9 @@ CustomLog ${APACHE_LOG_DIR}/www.webtwo.local_ccess.log combined
 # vi /etc/hosts
 192.168.1.44 www.webone.local
 192.168.1.44 www.webtwo.local
-(If you use windows based machines, edit “hosts” file in “C:\Windows\System32\drivers\etc” directory.
+(If you use windows based machines, edit “hosts” file in “C:\Windows\System32\drivers\etc” directory.)
 
-Open up your browser and point to the URL http://www.webone.local and http://www.webtwo.local)
+>>> Open up your browser and point to the URL http://www.webone.local and http://www.webtwo.local 
 
 
 
