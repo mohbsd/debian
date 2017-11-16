@@ -1,0 +1,109 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~ Setup Apache Virtual Hosts On Debian 9 / Ubuntu 16.04 / LinuxMint 18~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+{Virtual Hosting is used to host multiple websites on a single web server}
+
+ ~~~ Types of Virtual Hosting ~~~
+
+There are two types of Virtual Hosting in Apache web server,
+
+>> Name-based virtual hosting
+>> IP based virtual hosting
+
+With the Name-based virtual hosting, we can configure multiple websites on single ip address, whereas in ip based; we can configure only one website on single ip address.
+
+_____________________________________________________________________________________________________________________
+
+for demo =
+- Server Host Name = debian1.web.local
+- IP address = 192.168.1.44
+- website number 1 = www.webone.local
+- website number 2 = www.webtwo.local
+
+1/ Install Apache Web server (see lamp_install)
+
+2/ Setup Apache virtual hosts
+
+> Create public directories to store web documents <
+# mkdir -p /var/www/html/www.webone.local
+# mkdir -p /var/www/html/www.webtwo.local
+
+3/ Create demo page for Virtual Hosts
+# subl /var/www/html/www.webone.local/index.html
+<html>
+<head>
+	<title>www.webone.local </title>
+</head>
+
+<body>
+	<h1>WELCOME TO WEBONE WEBSITE</h1>
+</body>
+</html>
+
+
+# subl /var/www/html/www.webtwo.local/index.html
+<html>
+<head>
+	<title>www.webtwo.local </title>
+</head>
+
+<body>
+	<h1>WELCOME TO WEBTWO WEBSITE</h1>
+</body>
+</html>
+
+
+4/ Setting up directory ownership and permissions
+By default, apache service runs as a www-data user. Now, both virtual directories that we created earlier are owned by root, and we must change the ownership to www-data so that that apache server can write and read data into it.
+# sudo chown -R www-data:www-data /var/www/html
+
+Also, you can make virtual directories world readable
+# sudo chmod 755 /var/www/html/
+
+5/ Create Virtual Host files
+>> vhost 1 = www.webone.local.conf <<
+# sudo vim etc/apache2/sites-available/www.webone.local.conf
+
+<VirtualHost *:80>
+
+ServerAdmin admin@webone.local
+ServerName www.webone.local
+DocumentRoot /var/www/html/www.webone.local
+
+ErrorLog ${APACHE_LOG_DIR}/www.webone.local_error.log
+CustomLog ${APACHE_LOG_DIR}/www.webone.local_ccess.log combined
+
+</VirtualHost>
+
+>> vhost 2 = www.webtwo.local.conf <<
+# sudo vim etc/apache2/sites-available/www.webtwo.local.conf
+
+<VirtualHost *:80>
+
+ServerAdmin admin@webtwo.local
+ServerName www.webtwo.local
+DocumentRoot /var/www/html/www.webtwo.local
+
+ErrorLog ${APACHE_LOG_DIR}/www.webtwo.local_error.log
+CustomLog ${APACHE_LOG_DIR}/www.webtwo.local_ccess.log combined
+
+</VirtualHost>
+
+6/ After creating the virtual host files, enable new virtual hosts that we created just now by creating a symlink to the sites-enabled directory.
+
+# ln -s /etc/apache2/sites-available/www.webone.local.conf /etc/apache2/sites-enabled/
+# ln -s /etc/apache2/sites-available/www.webtwo.local.conf /etc/apache2/sites-enabled/
+# sudo service apache2 restart
+
+7/ Verifying Virtual Hosts
+
+# vi /etc/hosts
+192.168.1.44 www.webone.local
+192.168.1.44 www.webtwo.local
+(If you use windows based machines, edit “hosts” file in “C:\Windows\System32\drivers\etc” directory.
+
+Open up your browser and point to the URL http://www.webone.local and http://www.webtwo.local)
+
+
+
+
