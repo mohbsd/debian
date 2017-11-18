@@ -1,0 +1,78 @@
+--- DEBIAN INSTALLS ---
+
+----									----
+Mini RAM 80 Mb
+Mini Disk Space 700 Mb
+but better base system use the following:
+Mini RAM 512 Mb
+Mini Disk Space 5 Gb
+----									----
+
+*** PXE boot / TFTP boot *** (Trivial File Transfer Protocol)
+1 TFTP server (Le protocole trivial de transfert de fichiers (Trivial File Transfert Protocol, TFTP) est utilisé pour transférer l'image d'amorçage au client. )
+1 DHCP server ou 1 BOOTP server
+
+~~~~~
+DHCP
+~~~~~
+# apt-get install isc-dhcp-server
+=> conf : /etc/dhcp/dhcpd.conf
+
+ex conf :
+option domain-name "web.local";
+option domain-name-servers 192.168.1.1;
+option subnet-mask 255.255.255.0;
+default-lease-time 600;
+max-lease-time 7200;
+server-name "dhcp_bro";
+
+subnet 192.168.1.0 netmask 255.255.255.0 {
+  range 192.168.1.200 192.168.1.253;
+  option routers 192.168.1.1;
+}
+
+host clientname {
+  filename "/tftpboot.img";
+  server-name "dhcp_bro";
+  next-server servername;
+  hardware ethernet 08:00:27:b0:73:94; 
+  fixed-address 192.168.1.44;
+}
+
+# /etc/init.d/isc-dhcp-server restart 
+[[bug fix = [systemd-devel] pid file /var/run/dhcpd.pid currenty exists
+==> https://lists.freedesktop.org/archives/systemd-devel/2016-June/036786.html
+]]
+
+~~~~~~
+TFTP
+~~~~~~
+
+# apt-get install syslinux (get a boot loader)
+# mkdir -p /srv/tftp
+# cp /usr/lib/syslinux/pxelinux.0 /srv/tftp/
+# apt-get install dnsmasq
+
+=> /etc/dnsmasq.conf :
+--
+# Configuration file for dnsmasq.
+## Activation d'une plage DHCP pour les clients PXE, de 192.168.1.100 à 105
+## Une adresse IP est attribuée pour 6h au client
+dhcp-range=192.168.1.100,192.168.1.105,255.255.255.0,6h
+## Fichier de boot PXE
+dhcp-boot=pxelinux.0
+## Activer le TFTP et definir un repertoire (/srv/tftp)
+enable-tftp
+tftp-root=/srv/tftp
+--
+
+# service dnsmasq restart
+# cd /srv/tftp
+# wget http://ftp.debian.org/debian/dists/wheezy/main/installer-amd64/current/images/netboot/netboot.tar.gz
+# tar zxf netboot.tar.gz 
+# rm netboot.tar.gz
+# tree -d
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+https://wiki.debian-fr.xyz/PXE_avec_support_EFI
