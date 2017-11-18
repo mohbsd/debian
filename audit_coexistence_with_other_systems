@@ -1,0 +1,32 @@
+Coexistence :
+
+debian =>  SMB/CIFS => Windows
+
+debian => daemon NETATALK (AppleShare) = File Server => OS X machines
+
+# NETATALK implemente le protocole AppleShare (AFP)
+# NETATALK fournit Services Reseaux (partage imprimante , fichier...)
+# OS X => Bonjour (protocole ZeroConf) => Services Reseaux (partage imprimante , fichier) => debian
+
+Debian => Avahi => Services Reseaux (partage imprimante , fichier) => OS X
+
+Debian => NFS (fichiers) et NIS (annuaires utilisateurs) => Unix/Linux
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Audit :
+
+Objectif => continuite de service dans le cadre dune migration
+
+? Role principaux de chaque Serveurs + Services associes
+? Hosted Internet Services like -- 22/tcp open ssh -- ... => $ nmap servername
+? Active TCP sessions or wait / and UDP ports that programs are Listening => $ netstat -tupan ==> what services on the Network
+? # ps auxw => affiche tous les processus et leur identifiant utilisateur associé 
+? users connectes => $ who
+? processus planifies => crontab
+==> si Migration  =>>> \\\ sauvegarde prealable///
+? config => faire une copie des fichiers de conf souvent dans /etc et /usr/local/ puis /opt (si installe depuis sources)
+? DB => export : dump.SQL <=> DB , et, dunp.LDIF <=> LDAP server
+? verifier la doc relative aux logiciel 
+? version =  /etc/debian_version , $ apt-show-versions = consulte la liste des paquets installés et identifie les versions disponibles
+? provenance des paquets = /etc/apt/sources.list  ; /etc/apt/sources.list.d/
+? fichiers non affectes a des paquets => $ cruft	
