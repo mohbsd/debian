@@ -1,0 +1,18 @@
+1/ check the listening ports and applications
+
+sudo lsof -i -P -n | grep LISTEN 
+sudo netstat -tulpn | grep LISTEN
+sudo nmap -sTU -O IP-address-Here
+
+$ sudo nmap -sT -O localhost
+$ sudo nmap -sU -O 192.168.2.13 ##[ list open UDP ports ]##
+$ sudo nmap -sT -O 192.168.2.13 ##[ list open TCP ports ]##
+
+
+# TCP/UDP scan in a single command:
+sudo nmap -sTU -O 192.168.2.13
+
+#  port usage from Windows operating system
+netstat -bano | more
+netstat -bano | grep LISTENING
+netstat -bano | findstr /R /C:"[LISTEING]"
